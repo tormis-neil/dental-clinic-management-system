@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Feature Under Development - Kit & Dom's Dental Clinic</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #F7F8FA 0%, #E8F0FE 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 560px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 48px 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .icon {
+    font-size: 72px;
+    margin-bottom: 24px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 16px;
+    color: #64748B;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: #E8B4BC;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(232, 180, 188, 0.3);
+  }
+
+  .btn-back:hover {
+    background: #D89BA7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(232, 180, 188, 0.4);
+  }
+
+  .btn-back svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .footer {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #E2E8F0;
+    font-size: 13px;
+    color: #94A3B8;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🚧</div>
+    <h1>Feature Under Development</h1>
+    <p>This feature is planned for a future release. We're working hard to bring you the best experience. Please check back soon or contact your system administrator for more information.</p>
+    <button class="btn-back" onclick="goBack()">
+      <svg viewBox="0 0 24 24">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Go Back
+    </button>
+    <div class="footer">
+      © 2025 Kit &amp; Dom's Dental Clinic | Version 1.1
+    </div>
+  </div>
+
+  <script>
+    function goBack() {
+      // Try to go back in history, fallback to dashboard
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../pages/dashboard.html';
+      }
+    }
+  </script>
+</body>
+</html>
