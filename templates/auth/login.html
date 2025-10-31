@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kit & Dom's Dental Clinic – Staff & Manager Login</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Production CSS (external) -->
+  <link rel="stylesheet" href="../../css/login.css">
+
+  <!-- Security recommendation (set this on server) -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'"> -->
+
+  <meta name="description" content="Internal login for Kit & Dom's Dental Clinic staff and managers.">
+</head>
+<body>
+  <!-- Desktop warning modal (accessible) -->
+  <div id="mobileWarning" class="modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="mobileWarningTitle" aria-modal="true">
+    <div class="modal-card" role="document">
+      <h3 id="mobileWarningTitle">⚠️ Desktop Recommended</h3>
+      <p>This administrative system is optimized for desktop. For the best experience, please use a computer.</p>
+      <button id="dismissMobileWarning" class="btn-link">Continue anyway</button>
+    </div>
+  </div>
+
+  <main class="container" id="main">
+    <!-- Left Panel -->
+    <aside class="left-panel" aria-hidden="false">
+      <div class="branding">
+        <div class="logo" aria-hidden="true">🦷</div>
+        <div>
+          <div class="clinic-name">Kit &amp; Dom's<br>Dental Clinic</div>
+          <div class="tagline">Internal access for clinic staff and managers.</div>
+        </div>
+      </div>
+
+      <div class="illustration" aria-hidden="true">
+        <!-- decorative svg -->
+        <svg viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+          <path class="tooth-svg" d="M100 20c-20 0-35 10-40 30-5-20-20-30-40-30C10 20 5 30 5 45c0 35 15 75 35 115 10 20 30 35 60 35s50-15 60-35c20-40 35-80 35-115 0-15-5-25-15-25-20 0-35 10-40 30-5-20-20-30-40-30z"/>
+        </svg>
+      </div>
+    </aside>
+
+    <!-- Right Panel -->
+    <section class="right-panel" aria-labelledby="welcomeHeading">
+      <div class="login-card" role="region" aria-label="Login">
+        <h1 id="welcomeHeading">Welcome Back 👋</h1>
+        <p class="subtext">Sign in to your clinic account</p>
+
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <div class="input-wrapper">
+              <span class="input-icon" aria-hidden="true">
+                <!-- user icon -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                inputmode="text"
+                autocomplete="username"
+                placeholder="Enter username"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                required
+                aria-required="true"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </span>
+
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Enter password"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                required
+                aria-required="true"
+                aria-describedby="capsWarning"
+              />
+
+              <button type="button" id="togglePassword" class="password-toggle" aria-pressed="false" aria-label="Show password">👁️</button>
+            </div>
+
+            <div id="capsWarning" class="caps-warning" role="status" aria-live="polite">⚠️ Caps Lock is on</div>
+          </div>
+
+          <div class="form-row space-between">
+            <label class="remember-me">
+              <input type="checkbox" id="rememberMe" name="rememberMe" />
+              Remember me
+            </label>
+
+            <a class="forgot-link" href="mailto:manager@clinic.local" tabindex="0">🔐 Forgot password? Contact your clinic manager.</a>
+          </div>
+
+          <div id="errorMessage" class="error-message" role="alert" aria-live="assertive" hidden>
+            <span class="error-icon">⚠️</span>
+            <span id="errorText">Invalid username or password.</span>
+          </div>
+
+          <button type="submit" class="login-btn" id="loginBtn" aria-live="polite">
+            <span id="btnText">Log In</span>
+            <span class="spinner" id="spinner" aria-hidden="true"></span>
+            <span class="checkmark" id="checkmark" aria-hidden="true">✔</span>
+          </button>
+
+          <p class="footer-note">🔒 Staff use only — All login attempts are monitored.</p>
+        </form>
+
+        <p class="footer-text">v1.0 — Internal Clinic System</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Production JS -->
+  <script src="../../js/login.js" defer></script>
+  <noscript>
+    <p style="text-align:center;color:#b33;">This application requires JavaScript to function properly. Please enable JavaScript.</p>
+  </noscript>
+</body>
+</html>

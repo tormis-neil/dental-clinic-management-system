@@ -1,9 +1,9 @@
 /* login.js
-   Production-ready frontend login behavior.
-   - Replaced hardcoded credentials with fetch() to backend API (/api/auth/login)
+   Demo frontend login behavior.
+   - Uses hardcoded demo credentials for testing (front-end only)
    - "Remember me" persists username only (NOT password)
    - Accessible password toggle and CapsLock warning
-   - Expects backend to set secure httpOnly cookie or return token for client storage
+   - In production, replace with actual backend API call
 */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -53,7 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
     togglePassword.focus();
   });
 
-  // Form submit (POST to backend)
+  // Demo credentials (for testing only - replace with backend API in production)
+  const demoUsers = {
+    'manager': { password: 'manager123', role: 'manager', name: 'Dr. Maria Santos' },
+    'staff': { password: 'staff123', role: 'staff', name: 'Carla Reyes' }
+  };
+
+  // Form submit (Demo mode - front-end only)
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     clearError();
@@ -71,32 +77,14 @@ document.addEventListener('DOMContentLoaded', () => {
     btnText.textContent = 'Logging in...';
     spinner.classList.add('show');
 
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+
     try {
-      // IMPORTANT: ensure backend serves this endpoint over HTTPS and sets secure cookies/CSRF as needed.
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 15000); // 15s timeout
+      // Check demo credentials
+      const user = demoUsers[username];
 
-      const resp = await fetch('/api/auth/login', {
-        method: 'POST',
-        credentials: 'include', // allow server to set httpOnly cookie if implemented
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ username, password }),
-        signal: controller.signal
-      });
-      clearTimeout(timeout);
-
-      if (!resp.ok) {
-        // server returned 4xx/5xx
-        const text = await safeJsonText(resp);
-        throw new Error(text || `Server returned ${resp.status}`);
-      }
-
-      const data = await resp.json();
-
-      if (data && data.success) {
+      if (user && user.password === password) {
         // Handle remember-me (store username only)
         if (rememberEl.checked) {
           localStorage.setItem('clinic_remember_username', username);
@@ -104,25 +92,24 @@ document.addEventListener('DOMContentLoaded', () => {
           localStorage.removeItem('clinic_remember_username');
         }
 
-        // Backend should set a secure, httpOnly session cookie or return a short-lived token.
-        // If server returns a token and you must store it client-side (less secure), do so carefully.
-        // Example: if data.token received and your security model requires localStorage token:
-        // localStorage.setItem('clinic_auth_token', data.token);
+        // Store user session
+        sessionStorage.setItem('clinic_user', JSON.stringify({
+          username,
+          role: user.role,
+          name: user.name
+        }));
 
         spinner.classList.remove('show');
         btnText.textContent = 'Success';
         check.classList.add('show');
         btn.classList.add('success');
 
-        // redirect based on server suggestion or role
-        const redirect = data.redirect || (data.role === 'manager' ? '/manager/dashboard' : '/dashboard');
+        // Redirect to dashboard
         setTimeout(() => {
-          window.location.href = redirect;
+          window.location.href = '../pages/dashboard.html';
         }, 600);
       } else {
-        // Login failed (bad credentials, locked, etc.)
-        const message = (data && data.message) ? data.message : 'Invalid username or password.';
-        throw new Error(message);
+        throw new Error('Invalid username or password.');
       }
     } catch (err) {
       // friendly error
