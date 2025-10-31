@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Patient Profile — Kit & Dom's Dental Clinic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/patient-detail.css">
+</head>
+
+<body>
+  <div class="page-wrapper">
+    <div class="page-title">Patient Profile</div>
+    <div class="page-sub">View medical information, visits, and history</div>
+
+    <!-- Quick Actions -->
+    <div class="action-bar">
+      <button class="btn btn-outline" onclick="goBack()">← Back</button>
+      <button class="btn btn-outline" onclick="editPatient()">Edit</button>
+      <button class="btn btn-outline" onclick="addVisit()">+ Visit</button>
+      <button class="btn btn-primary" id="btnDeletePatient" onclick="deletePatient()">Delete</button>
+    </div>
+
+    <div class="profile-layout">
+      <!-- LEFT PATIENT CARD -->
+      <div class="profile-card">
+        <div class="profile-name" id="ptName"></div>
+
+        <div class="info-row"><span class="label">Patient ID</span><span id="ptId"></span></div>
+        <div class="info-row"><span class="label">Contact</span><span id="ptContact"></span></div>
+        <div class="info-row"><span class="label">Gender</span><span id="ptGender"></span></div>
+        <div class="info-row"><span class="label">Date of Birth</span><span id="ptDOB"></span></div>
+        <div class="info-row"><span class="label">Age</span><span id="ptAge"></span></div>
+        <div class="info-row"><span class="label">Address</span><span id="ptAddress"></span></div>
+
+        <div class="info-row" style="margin-top:12px;">
+          <span class="label">Status</span>
+          <span id="ptStatus" class="status-badge"></span>
+        </div>
+
+        <div class="last-visit"><strong>Last Visit:</strong> <span id="ptLastVisit"></span></div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div style="flex:1">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab('visits')" id="tabVisits">Visit History</button>
+          <button class="tab-btn" onclick="switchTab('medical')" id="tabMedical">Medical History</button>
+        </div>
+
+        <div id="visitsPanel" class="card">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Provider</th><th>Service</th><th>Notes</th></tr>
+            </thead>
+            <tbody id="visitRows"></tbody>
+          </table>
+        </div>
+
+        <div id="medicalPanel" class="card" style="display:none;">
+          <div style="margin-bottom:16px;">
+            <span style="font-size:14px;color:#64748B;">Medical Information</span>
+          </div>
+
+          <div class="info-row"><span class="label">Allergies</span><div id="medAllergies">—</div></div>
+          <div class="info-row"><span class="label">Existing Conditions</span><div id="medConditions">—</div></div>
+          <div class="info-row"><span class="label">Dentist Notes / Diagnosis</span><div id="medDentistNotes">—</div></div>
+          <div class="info-row"><span class="label">Assigned Dentist</span><div id="medAssignedDentist">—</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/patient-detail.js"></script>
+</body>
+</html>
