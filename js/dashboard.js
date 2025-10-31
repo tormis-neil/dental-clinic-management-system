@@ -1,4 +1,18 @@
- /* Dashboard Script – Kit & Dom's Dental Clinic */
+/**
+ * dashboard.js - Dashboard Overview Module
+ *
+ * Displays clinic overview with summary cards and recent activity.
+ *
+ * Features:
+ * - Role-based dashboard views (manager vs staff)
+ * - Summary statistics cards
+ * - Recent activity timeline
+ * - Role switching for demonstration
+ *
+ * @author Kit & Dom's Dental Clinic
+ * @version 1.1
+ * @date 2025-10-31
+ */
 
 // --- Elements ---
 const sidebar = document.getElementById("sidebar");

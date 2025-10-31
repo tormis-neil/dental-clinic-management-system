@@ -1,10 +1,24 @@
-/* login.js
-   Frontend login behavior.
-   - Test credentials available for development (front-end only)
-   - "Remember me" persists username only (NOT password)
-   - Accessible password toggle and CapsLock warning
-   - In production, replace with actual backend API call
-*/
+/**
+ * login.js - User Authentication Module
+ *
+ * Handles user login with enhanced security features and accessibility.
+ *
+ * Features:
+ * - Form validation with specific error messages
+ * - Remember me functionality (username only, secure)
+ * - Accessible password toggle and Caps Lock warning
+ * - Loading states and user feedback
+ * - Mobile device warning
+ *
+ * Security Notes:
+ * - Test credentials: manager/manager123, staff/staff123
+ * - In production, replace with backend API authentication
+ * - Never store passwords in localStorage
+ *
+ * @author Kit & Dom's Dental Clinic
+ * @version 1.1
+ * @date 2025-10-31
+ */
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('loginForm');
@@ -68,8 +82,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const username = usernameEl.value.trim();
     const password = passwordEl.value;
 
-    if (!username || !password) {
-      showFieldErrors(!username, !password);
+    // Enhanced validation with specific messages
+    if (!username && !password) {
+      showError('Please enter your username and password.');
+      usernameEl.classList.add('error');
+      passwordEl.classList.add('error');
+      return;
+    }
+    if (!username) {
+      showError('Username is required.');
+      usernameEl.classList.add('error');
+      return;
+    }
+    if (!password) {
+      showError('Password is required.');
+      passwordEl.classList.add('error');
       return;
     }
 
@@ -82,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     await new Promise(resolve => setTimeout(resolve, 800));
 
     try {
-      // Check demo credentials
+      // Check test credentials
       const user = demoUsers[username];
 
       if (user && user.password === password) {
@@ -101,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
 
         spinner.classList.remove('show');
-        btnText.textContent = 'Success';
+        btnText.textContent = 'Success!';
         check.classList.add('show');
         btn.classList.add('success');
 
@@ -110,26 +137,21 @@ document.addEventListener('DOMContentLoaded', () => {
           window.location.href = '../pages/dashboard.html';
         }, 600);
       } else {
-        throw new Error('Invalid username or password.');
+        throw new Error('Invalid username or password. Please try again.');
       }
     } catch (err) {
-      // friendly error
+      // Friendly error with recovery
       spinner.classList.remove('show');
       btn.disabled = false;
       btnText.textContent = 'Log In';
-      showError(err.message || 'Login failed. Please try again.');
+      showError(err.message || 'Unable to log in. Please check your credentials and try again.');
     }
   });
-
-  function showFieldErrors(usernameMissing, passwordMissing) {
-    if (usernameMissing) usernameEl.classList.add('error');
-    if (passwordMissing) passwordEl.classList.add('error');
-    showError('Please fill out required fields.');
-  }
 
   function showError(message) {
     errorText.textContent = message;
     errorMessage.hidden = false;
+    errorMessage.setAttribute('role', 'alert');
   }
 
   function clearError() {
@@ -137,13 +159,5 @@ document.addEventListener('DOMContentLoaded', () => {
     errorText.textContent = '';
     usernameEl.classList.remove('error');
     passwordEl.classList.remove('error');
-  }
-
-  async function safeJsonText(response) {
-    try {
-      const t = await response.text();
-      // try parse JSON message if available
-      try { const j = JSON.parse(t); return j.message || t; } catch { return t; }
-    } catch { return null; }
   }
 });
