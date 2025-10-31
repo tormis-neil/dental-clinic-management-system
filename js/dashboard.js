@@ -27,7 +27,7 @@ document.addEventListener("click", (e) => {
 document.getElementById("managerBtn").addEventListener("click", () => switchRole("manager"));
 document.getElementById("staffBtn").addEventListener("click", () => switchRole("staff"));
 
-// --- Demo data ---
+// --- Sample data for testing ---
 const demoData = {
   manager: {
     user: { name: "Maria Santos", role: "Manager / Dentist", avatar: "MS" },
@@ -87,6 +87,11 @@ function switchRole(role) {
   renderTable(data.table);
 }
 
+// --- Security: HTML escape helper ---
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+}
+
 // --- Render summary cards ---
 function renderCards(cards) {
   summaryCards.innerHTML = "";
@@ -95,8 +100,8 @@ function renderCards(cards) {
     card.className = `card${c.admin ? " admin-only" : ""}`;
     card.innerHTML = `
       <div class="card-value">${c.value}</div>
-      <div class="card-label">${c.label}</div>
-      <div class="card-trend ${c.type}">${c.trend}</div>
+      <div class="card-label">${escapeHtml(c.label)}</div>
+      <div class="card-trend ${c.type}">${escapeHtml(c.trend)}</div>
     `;
     summaryCards.appendChild(card);
   });
@@ -118,10 +123,10 @@ function renderTable(rows) {
         .map(
           (r) => `
           <tr>
-            <td><strong>${r.user}</strong></td>
-            <td>${actionBadge(r.action)} ${r.desc}</td>
-            <td>${r.time}</td>
-            <td class="record-id">${r.id}</td>
+            <td><strong>${escapeHtml(r.user)}</strong></td>
+            <td>${actionBadge(r.action)} ${escapeHtml(r.desc)}</td>
+            <td>${escapeHtml(r.time)}</td>
+            <td class="record-id">${escapeHtml(r.id)}</td>
           </tr>
         `
         )

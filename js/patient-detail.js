@@ -56,11 +56,16 @@ const statusEl = document.getElementById("ptStatus");
 statusEl.textContent = patient.status === "active" ? "Active" : "Inactive";
 statusEl.classList.add(patient.status === "active" ? "status-active" : "status-inactive");
 
+// Security: HTML escape helper
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+}
+
 // Visit table
 let rows = "";
 patient.visits.forEach(v => {
   rows += `<tr>
-    <td>${v.date}</td><td>${v.provider}</td><td>${v.service}</td><td>${v.notes}</td>
+    <td>${escapeHtml(v.date)}</td><td>${escapeHtml(v.provider)}</td><td>${escapeHtml(v.service)}</td><td>${escapeHtml(v.notes)}</td>
   </tr>`;
 });
 document.getElementById("visitRows").innerHTML = rows;

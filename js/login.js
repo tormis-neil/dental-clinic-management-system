@@ -1,6 +1,6 @@
 /* login.js
-   Demo frontend login behavior.
-   - Uses hardcoded demo credentials for testing (front-end only)
+   Frontend login behavior.
+   - Test credentials available for development (front-end only)
    - "Remember me" persists username only (NOT password)
    - Accessible password toggle and CapsLock warning
    - In production, replace with actual backend API call
@@ -53,13 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
     togglePassword.focus();
   });
 
-  // Demo credentials (for testing only - replace with backend API in production)
+  // Test credentials for development (replace with backend API in production)
+  // Available users: manager/manager123, staff/staff123
   const demoUsers = {
     'manager': { password: 'manager123', role: 'manager', name: 'Dr. Maria Santos' },
     'staff': { password: 'staff123', role: 'staff', name: 'Carla Reyes' }
   };
 
-  // Form submit (Demo mode - front-end only)
+  // Form submit handler
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     clearError();
