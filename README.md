@@ -13,10 +13,14 @@ This system provides a secure, organized, and user-friendly internal platform fo
 
 ```
 dental-clinic-management-system/
-├── index.html              # Login page (entry point)
-├── dashboard.html          # Manager/Staff dashboard
-├── patients.html           # Patient records listing & management
-├── patient-detail.html     # Individual patient profile view
+├── index.html              # Redirects to login page
+├── templates/              # HTML templates
+│   ├── auth/               # Authentication pages
+│   │   └── login.html      # Login page
+│   └── pages/              # Application pages
+│       ├── dashboard.html  # Manager/Staff dashboard
+│       ├── patients.html   # Patient records listing & management
+│       └── patient-detail.html  # Individual patient profile view
 ├── css/                    # Stylesheets
 │   ├── login.css
 │   ├── dashboard.css
@@ -58,7 +62,7 @@ python -m http.server 8000
 python -m SimpleHTTPServer 8000
 ```
 
-Then open your browser and navigate to `http://localhost:8000`
+Then open your browser and navigate to `http://localhost:8000` (will auto-redirect to login page)
 
 #### Option 2: Using Node.js http-server
 
@@ -143,11 +147,29 @@ The system includes demo accounts for testing:
 - Smooth transitions and animations
 - Consistent UI patterns across pages
 
+## Design & UI Refinements
+
+The application features a polished, professional design with:
+
+- **Modern Typography**: Clear hierarchy using Poppins (headings) and Inter (body text)
+- **Refined Spacing**: Consistent padding and margins throughout
+- **Enhanced Visual Elements**:
+  - Gradient buttons with smooth hover effects
+  - Subtle shadows and borders
+  - Improved card designs with better visual weight
+  - Cleaner table layouts with hover states
+- **Better Font Sizing**: Optimized for readability across all pages
+- **Consistent Color Scheme**: Rose/pink theme (#E8B4BC) with professional grays
+- **Smooth Transitions**: 200ms ease transitions for interactive elements
+- **Improved Form Elements**: Better input field styling with focus states
+
 ## File Organization Notes
 
-- **patients.html**: Contains inline CSS and JavaScript for easier deployment. External files exist in `css/` and `js/` directories but are not currently used by this page.
-- **Other pages**: Use external CSS and JS files for better separation of concerns.
-- **Archive folder**: Contains the old project structure before reorganization.
+- **Templates Structure**: HTML files organized into `auth/` and `pages/` subdirectories
+- **patients.html**: Contains inline CSS and JavaScript for self-contained deployment
+- **Other pages**: Use external CSS and JS files for better maintainability
+- **Archive folder**: Contains the old project structure before reorganization
+- **CSS Files**: Refined with professional spacing, typography, and visual polish
 
 ## Browser Compatibility
 
