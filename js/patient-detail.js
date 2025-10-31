@@ -1,4 +1,20 @@
-// Demo patient data
+/**
+ * patient-detail.js - Individual Patient Profile Module
+ *
+ * Displays detailed patient information including visit history and medical records.
+ *
+ * Features:
+ * - Patient demographic information
+ * - Visit history with tabbed interface
+ * - Medical history and notes
+ * - XSS-protected data rendering
+ *
+ * @author Kit & Dom's Dental Clinic
+ * @version 1.1
+ * @date 2025-10-31
+ */
+
+// Sample patient data
 const patient = {
   id: "PT-0002",
   name: "Peter Dela Cruz",

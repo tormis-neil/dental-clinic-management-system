@@ -110,7 +110,93 @@ tbody tr:hover{background:rgba(232,180,188,0.06)}
 .hidden{display:none}
 .flex-center{display:flex;align-items:center;gap:8px}
 
+/* --- Notification Toast --- */
+.notification-toast{
+  position:fixed;
+  top:20px;
+  right:20px;
+  min-width:320px;
+  max-width:500px;
+  background:#fff;
+  border-radius:8px;
+  padding:16px 20px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  z-index:9999;
+  opacity:0;
+  transform:translateX(400px);
+  transition:all 0.3s ease;
+}
+
+.notification-toast.show{
+  opacity:1;
+  transform:translateX(0);
+}
+
+.notification-icon{
+  font-size:20px;
+  font-weight:bold;
+  flex-shrink:0;
+}
+
+.notification-message{
+  flex:1;
+  font-size:14px;
+  line-height:1.5;
+  color:#1A1A1A;
+}
+
+.notification-close{
+  background:transparent;
+  border:0;
+  font-size:24px;
+  line-height:1;
+  color:#64748B;
+  cursor:pointer;
+  padding:0;
+  width:24px;
+  height:24px;
+  flex-shrink:0;
+  transition:color 0.2s;
+}
+
+.notification-close:hover{
+  color:#1A1A1A;
+}
+
+.notification-success{
+  border-left:4px solid #10B981;
+}
+
+.notification-success .notification-icon{
+  color:#10B981;
+}
+
+.notification-error{
+  border-left:4px solid #EF4444;
+}
+
+.notification-error .notification-icon{
+  color:#EF4444;
+}
+
+.notification-info{
+  border-left:4px solid #3B82F6;
+}
+
+.notification-info .notification-icon{
+  color:#3B82F6;
+}
+
 /* --- Desktop-only banner for smaller widths --- */
 @media (max-width:1024px){
   body::before{content:'This system is optimized for desktop use. Please access from a desktop computer.';position:fixed;top:0;left:0;right:0;background:#FEF3C7;color:#92400E;padding:12px;text-align:center;z-index:3000;border-bottom:2px solid #FCD34D}
+
+  .notification-toast{
+    right:10px;
+    left:10px;
+    min-width:auto;
+  }
 }

@@ -1,8 +1,23 @@
-/* patients.js — extracted from patients.html */
+/**
+ * patients.js - Patient Management Module
+ *
+ * Handles patient list display, CRUD operations, filtering, and role-based access control.
+ *
+ * Features:
+ * - Display patient list with search and filters
+ * - Add/Edit/Delete patient records (role-based permissions)
+ * - Data validation and XSS protection
+ * - CSV export functionality for managers
+ * - Real-time notifications for user actions
+ *
+ * @author Kit & Dom's Dental Clinic
+ * @version 1.1
+ * @date 2025-10-31
+ */
 
-/* -------------------------
-   Sample data + state for testing
-   ------------------------- */
+/* ========================
+   INITIALIZATION & DATA
+   ======================== */
 let currentRole = 'manager'; // default (manager or staff)
 document.body.setAttribute('data-role', currentRole);
 
@@ -16,9 +31,15 @@ const demoPatients = [
 let patients = JSON.parse(JSON.stringify(demoPatients)); // working copy
 let selectedIds = new Set();
 
-/* -------------------------
-   Role switcher
-   ------------------------- */
+/* ========================
+   ROLE MANAGEMENT
+   ======================== */
+
+/**
+ * Switches between manager and staff role views
+ * Adjusts UI permissions and available features based on role
+ * @param {string} role - 'manager' or 'staff'
+ */
 function switchRole(role){
   currentRole = role;
   document.body.setAttribute('data-role', role);
@@ -46,17 +67,23 @@ function switchRole(role){
   renderTable();
 }
 
-/* -------------------------
-   Sidebar toggle
-   ------------------------- */
+/**
+ * Toggles sidebar collapsed/expanded state
+ */
 function toggleSidebar(){
   document.getElementById('sidebar').classList.toggle('collapsed');
   document.getElementById('mainContent').classList.toggle('expanded');
 }
 
-/* -------------------------
-   Utilities
-   ------------------------- */
+/* ========================
+   UTILITY FUNCTIONS
+   ======================== */
+
+/**
+ * Calculates age from date of birth
+ * @param {string} dob - Date of birth in YYYY-MM-DD format
+ * @returns {number} Age in years
+ */
 function ageFromDOB(dob){
   if(!dob) return '';
   const b = new Date(dob);
@@ -65,9 +92,15 @@ function ageFromDOB(dob){
   return age;
 }
 
-/* -------------------------
-   Render table
-   ------------------------- */
+/* ========================
+   TABLE RENDERING
+   ======================== */
+
+/**
+ * Renders the patient table with current data
+ * Displays different columns based on user role
+ * All user data is escaped to prevent XSS attacks
+ */
 function renderTable(){
   const table = document.getElementById('patientsTable');
   const cols = currentRole==='manager'
@@ -133,16 +166,22 @@ function renderTable(){
   });
 }
 
-/* -------------------------
-   Selection
-   ------------------------- */
+/* ========================
+   SELECTION MANAGEMENT
+   ======================== */
+
+/**
+ * Handles patient row selection/deselection
+ * @param {string} id - Patient ID
+ * @param {HTMLInputElement} checkbox - Checkbox element
+ */
 function toggleSelect(id, checkbox){
   if(checkbox.checked) selectedIds.add(id); else selectedIds.delete(id);
 }
 
-/* -------------------------
-   Filters + Search
-   ------------------------- */
+/* ========================
+   FILTERING & SEARCH
+   ======================== */
 document.getElementById('searchInput').addEventListener('input', applyFilters);
 document.getElementById('genderFilter').addEventListener('change', applyFilters);
 document.getElementById('statusFilter').addEventListener('change', applyFilters);
@@ -175,9 +214,14 @@ function renderFiltered(list){
 
 function resetFilters(){ document.getElementById('searchInput').value=''; document.getElementById('genderFilter').value=''; document.getElementById('statusFilter').value=''; patients = demoPatients.slice(); selectedIds.clear(); renderTable(); }
 
-/* -------------------------
-   Modals: View / Add / Edit
-   ------------------------- */
+/* ========================
+   MODAL OPERATIONS
+   ======================== */
+
+/**
+ * Opens modal to view patient details
+ * @param {string} id - Patient ID
+ */
 const backdrop = document.getElementById('modalBackdrop');
 const modalEl = document.getElementById('modal');
 
@@ -185,7 +229,7 @@ function openViewModal(id){
   const p = patients.find(x=>x.id===id) || demoPatients.find(x=>x.id===id);
   if(!p) return alert('Patient not found');
   modalEl.innerHTML = `
-    <h3>Patient Details</h3>
+    <h3 id="modalTitle">Patient Details</h3>
     <div class="row">
       <div><label>Patient ID</label><div class="muted">${escapeHtml(p.id)}</div></div>
       <div><label>Full Name</label><div><strong>${escapeHtml(p.firstName)} ${escapeHtml(p.lastName)}</strong></div></div>
@@ -210,7 +254,7 @@ function openViewModal(id){
  function openAddModal(){
   const isManager = currentRole === 'manager';
   modalEl.innerHTML = `
-    <h3>Add New Patient</h3>
+    <h3 id="modalTitle">Add New Patient</h3>
     <div class="row">
       <div><label>First Name</label><input id="m_firstName" required /></div>
       <div><label>Last Name</label><input id="m_lastName" required /></div>
@@ -266,7 +310,7 @@ function openEditModal(id) {
 
   const isManager = currentRole === 'manager';
   modalEl.innerHTML = `
-    <h3>Edit Patient</h3>
+    <h3 id="modalTitle">Edit Patient</h3>
     <div class="row">
       <div><label>First Name</label><input id="m_firstName" value="${escapeHtml(p.firstName)}" required /></div>
       <div><label>Last Name</label><input id="m_lastName" value="${escapeHtml(p.lastName)}" required /></div>
@@ -315,23 +359,47 @@ function openEditModal(id) {
   openBackdrop();
 }
 
-/* -------------------------
-   Save (Manager) & Submit (Staff)
-   ------------------------- */
+/* ========================
+   CRUD OPERATIONS - CREATE/UPDATE
+   ======================== */
+
+/**
+ * Saves a new patient record (Manager only)
+ * Validates all required fields and data formats
+ */
 function saveNewPatient(){
   const firstName = document.getElementById('m_firstName').value.trim();
   const lastName = document.getElementById('m_lastName').value.trim();
+  const contact = document.getElementById('m_contact').value.trim();
 
-  // Validate required fields
-  if(!firstName || !lastName){
-    alert('Please fill out required fields (First Name and Last Name)');
+  // Enhanced validation with specific messages
+  if(!firstName && !lastName){
+    showNotification('Please enter patient name (First Name and Last Name are required).', 'error');
+    return;
+  }
+  if(!firstName){
+    showNotification('First Name is required.', 'error');
+    return;
+  }
+  if(!lastName){
+    showNotification('Last Name is required.', 'error');
     return;
   }
 
   // Validate name format (letters, spaces, hyphens only)
   const namePattern = /^[a-zA-Z\s\-']+$/;
-  if(!namePattern.test(firstName) || !namePattern.test(lastName)){
-    alert('Names can only contain letters, spaces, hyphens, and apostrophes');
+  if(!namePattern.test(firstName)){
+    showNotification('First Name can only contain letters, spaces, hyphens, and apostrophes.', 'error');
+    return;
+  }
+  if(!namePattern.test(lastName)){
+    showNotification('Last Name can only contain letters, spaces, hyphens, and apostrophes.', 'error');
+    return;
+  }
+
+  // Validate phone number format (optional but if provided, must be valid)
+  if(contact && !/^[0-9\-\+\(\)\s]+$/.test(contact)){
+    showNotification('Please enter a valid phone number.', 'error');
     return;
   }
 
@@ -341,7 +409,7 @@ function saveNewPatient(){
     lastName,
     gender: document.getElementById('m_gender').value,
     birth: document.getElementById('m_dob').value,
-    contact: document.getElementById('m_contact').value,
+    contact: contact,
     address: document.getElementById('m_address').value,
     medical: document.getElementById('m_medical') ? document.getElementById('m_medical').value : '',
     notes: document.getElementById('m_notes').value,
@@ -354,7 +422,7 @@ function saveNewPatient(){
   patients = demoPatients.slice();
   closeModal();
   renderTable();
-  alert('Patient record saved successfully.');
+  showNotification(`✓ Patient "${firstName} ${lastName}" added successfully!`, 'success');
 }
 
 
@@ -362,16 +430,24 @@ function submitForReview(){
   const firstName = document.getElementById('m_firstName').value.trim();
   const lastName = document.getElementById('m_lastName').value.trim();
 
-  // Validate required fields
-  if(!firstName || !lastName){
-    alert('Please fill out required fields (First Name and Last Name)');
+  // Enhanced validation
+  if(!firstName && !lastName){
+    showNotification('Please enter patient name (First Name and Last Name are required).', 'error');
+    return;
+  }
+  if(!firstName){
+    showNotification('First Name is required.', 'error');
+    return;
+  }
+  if(!lastName){
+    showNotification('Last Name is required.', 'error');
     return;
   }
 
-  // Validate name format (letters, spaces, hyphens only)
+  // Validate name format
   const namePattern = /^[a-zA-Z\s\-']+$/;
   if(!namePattern.test(firstName) || !namePattern.test(lastName)){
-    alert('Names can only contain letters, spaces, hyphens, and apostrophes');
+    showNotification('Names can only contain letters, spaces, hyphens, and apostrophes.', 'error');
     return;
   }
 
@@ -391,27 +467,38 @@ function submitForReview(){
   patients = demoPatients.slice();
   closeModal();
   renderTable();
-  alert('Patient submitted for review. A manager will verify and approve.');
+  showNotification(`✓ Patient "${firstName} ${lastName}" submitted for manager review.`, 'success');
 }
 
 
 function saveEditPatient(id){
   const p = demoPatients.find(x=>x.id===id);
-  if(!p) return alert('Not found');
+  if(!p){
+    showNotification('Patient record not found.', 'error');
+    return;
+  }
 
   const firstName = document.getElementById('m_firstName').value.trim();
   const lastName = document.getElementById('m_lastName').value.trim();
 
-  // Validate required fields
-  if(!firstName || !lastName){
-    alert('Please fill out required fields (First Name and Last Name)');
+  // Enhanced validation
+  if(!firstName && !lastName){
+    showNotification('Please enter patient name (First Name and Last Name are required).', 'error');
+    return;
+  }
+  if(!firstName){
+    showNotification('First Name is required.', 'error');
+    return;
+  }
+  if(!lastName){
+    showNotification('Last Name is required.', 'error');
     return;
   }
 
   // Validate name format
   const namePattern = /^[a-zA-Z\s\-']+$/;
   if(!namePattern.test(firstName) || !namePattern.test(lastName)){
-    alert('Names can only contain letters, spaces, hyphens, and apostrophes');
+    showNotification('Names can only contain letters, spaces, hyphens, and apostrophes.', 'error');
     return;
   }
 
@@ -425,55 +512,139 @@ function saveEditPatient(id){
   patients = demoPatients.slice();
   closeModal();
   renderTable();
+  showNotification(`✓ Changes saved for "${firstName} ${lastName}".`, 'success');
 }
 
-/* -------------------------
-   Delete
-   ------------------------- */
+/* ========================
+   CRUD OPERATIONS - DELETE
+   ======================== */
+
+/**
+ * Deletes a single patient record with confirmation
+ * Manager permission required
+ * @param {string} id - Patient ID to delete
+ */
 function confirmDelete(id){
-  if(currentRole !== 'manager'){ return alert('You do not have permission to delete records'); }
-  if(!confirm('Delete this patient record? This action cannot be undone.')) return;
+  if(currentRole !== 'manager'){
+    showNotification('You do not have permission to delete records.', 'error');
+    return;
+  }
+
+  const patient = demoPatients.find(p => p.id === id);
+  if(!patient){
+    showNotification('Patient record not found.', 'error');
+    return;
+  }
+
+  const patientName = `${patient.firstName} ${patient.lastName}`;
+  if(!confirm(`Are you sure you want to delete ${patientName}?\n\nThis action cannot be undone.`)){
+    return;
+  }
+
   demoPatients = demoPatients.filter(p=>p.id !== id);
   patients = demoPatients.slice();
   selectedIds.delete(id);
   renderTable();
+  showNotification(`✓ Patient "${patientName}" deleted successfully.`, 'success');
 }
 
 function deleteSelected(){
-  if(currentRole !== 'manager'){ return alert('Permission denied'); }
-  if(selectedIds.size === 0) return alert('No rows selected');
-  if(!confirm(`Delete ${selectedIds.size} selected record(s)?`)) return;
+  if(currentRole !== 'manager'){
+    showNotification('You do not have permission to delete records.', 'error');
+    return;
+  }
+
+  if(selectedIds.size === 0){
+    showNotification('Please select at least one patient to delete.', 'error');
+    return;
+  }
+
+  const count = selectedIds.size; // Save count before clearing
+  if(!confirm(`Are you sure you want to delete ${count} selected patient(s)?\n\nThis action cannot be undone.`)){
+    return;
+  }
+
   demoPatients = demoPatients.filter(p => !selectedIds.has(p.id));
   patients = demoPatients.slice();
   selectedIds.clear();
   renderTable();
+  showNotification(`✓ ${count} patient(s) deleted successfully.`, 'success');
 }
 
-/* -------------------------
-   Export CSV (manager only)
-   ------------------------- */
+/* ========================
+   DATA EXPORT
+   ======================== */
+
+/**
+ * Exports all patient data to CSV file
+ * Manager permission required
+ * File includes timestamp in filename
+ */
 function exportCSV(){
-  if(currentRole !== 'manager') return alert('Permission denied');
-  const headers = ['Patient ID','First Name','Last Name','Gender','DOB','Contact','Last Visit','Status','Notes'];
-  const rows = demoPatients.map(p => [p.id, p.firstName, p.lastName, p.gender, p.birth || '', p.contact || '', p.lastVisit || '', p.status, (p.notes||'')]);
-  const csv = [headers, ...rows].map(r => r.map(field => `"${String(field).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'patients_export.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  if(currentRole !== 'manager'){
+    showNotification('You do not have permission to export data.', 'error');
+    return;
+  }
+
+  if(demoPatients.length === 0){
+    showNotification('No patient records to export.', 'error');
+    return;
+  }
+
+  try {
+    const headers = ['Patient ID','First Name','Last Name','Gender','DOB','Contact','Last Visit','Status','Notes'];
+    const rows = demoPatients.map(p => [p.id, p.firstName, p.lastName, p.gender, p.birth || '', p.contact || '', p.lastVisit || '', p.status, (p.notes||'')]);
+    const csv = [headers, ...rows].map(r => r.map(field => `"${String(field).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `patients_export_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showNotification(`✓ Exported ${demoPatients.length} patient records to CSV.`, 'success');
+  } catch(error){
+    showNotification('Failed to export data. Please try again.', 'error');
+  }
 }
 
-/* -------------------------
-   Helpers + small UI
-   ------------------------- */
+/* ========================
+   HELPER FUNCTIONS
+   ======================== */
+
+/**
+ * Generates a unique patient ID
+ * @returns {string} Patient ID in format PT-XXXX
+ */
 function generateId(){
   const n = Math.floor(Math.random()*9000)+1000;
   return `PT-${n}`;
 }
-function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]) }
+/**
+ * Escapes HTML special characters to prevent XSS attacks
+ * @param {string} s - String to escape
+ * @returns {string} Escaped string safe for HTML insertion
+ */
+function escapeHtml(s){
+  return String(s||'').replace(/[&<>"']/g, c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[c]);
+}
 
-/* -------------------------
-   Navigation + misc
-   ------------------------- */
+/* ========================
+   NAVIGATION
+   ======================== */
+
+/**
+ * Navigates to different pages in the application
+ * @param {string} page - Page identifier (dashboard, patients, team, etc.)
+ */
 function navigateTo(page){
   const pageMap = {
     'dashboard': '../pages/dashboard.html',
@@ -496,9 +667,13 @@ function toggleUserMenu(){
   alert('User menu');
 }
 
-/* -------------------------
-   Modal open/close helpers
-   ------------------------- */
+/* ========================
+   MODAL CONTROLS
+   ======================== */
+
+/**
+ * Opens the modal backdrop
+ */
 function openBackdrop() {
   backdrop.style.display = 'flex';
 }
@@ -510,11 +685,55 @@ function closeModal(event) {
   }
 }
 
-/* -------------------------
-   Initial render
-   ------------------------- */
+/* ========================
+   NOTIFICATION SYSTEM
+   ======================== */
+
+/**
+ * Displays a toast notification to the user
+ * Success messages auto-dismiss after 4 seconds
+ * @param {string} message - Message to display
+ * @param {string} type - 'success', 'error', or 'info'
+ */
+function showNotification(message, type = 'info'){
+  // Remove any existing notification
+  const existing = document.querySelector('.notification-toast');
+  if(existing) existing.remove();
+
+  // Create notification element
+  const toast = document.createElement('div');
+  toast.className = `notification-toast notification-${type}`;
+  toast.setAttribute('role', 'alert');
+  toast.setAttribute('aria-live', 'polite');
+
+  const icon = type === 'success' ? '✓' : type === 'error' ? '✗' : 'ℹ';
+  toast.innerHTML = `
+    <span class="notification-icon">${icon}</span>
+    <span class="notification-message">${escapeHtml(message)}</span>
+    <button class="notification-close" onclick="this.parentElement.remove()" aria-label="Close notification">×</button>
+  `;
+
+  document.body.appendChild(toast);
+
+  // Trigger animation
+  setTimeout(() => toast.classList.add('show'), 10);
+
+  // Auto-dismiss success messages after 4 seconds
+  if(type === 'success'){
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 4000);
+  }
+}
+
+/* ========================
+   INITIALIZATION
+   ======================== */
 renderTable();
 
-/* expose for debugging in console */
+// Expose for debugging in browser console
+// Usage: window._patients to view current patient data
+// Usage: window.switchRole('manager') or window.switchRole('staff')
 window._patients = patients;
 window.switchRole = switchRole;
