@@ -21,12 +21,12 @@
         </svg>
       </button>
       <div class="header-logo">🦷</div>
-      <div class="header-title">Kit & Dom's Dental Clinic — Manager Dashboard</div>
+      <div class="header-title" id="pageTitle">Kit & Dom's Dental Clinic</div>
     </div>
 
     <div class="header-right">
       <div class="user-dropdown" id="userDropdown">
-        <button class="user-trigger" aria-haspopup="true" aria-expanded="false">
+        <button class="user-trigger" onclick="toggleDropdown()" aria-haspopup="true" aria-expanded="false">
           <div class="user-avatar" id="userAvatar">MS</div>
           <div class="user-info">
             <div class="user-name" id="userName">Maria Santos</div>
@@ -38,11 +38,11 @@
         </button>
 
         <div class="dropdown-menu" role="menu">
-          <button class="dropdown-item" id="viewProfileBtn">My Profile</button>
-          <button class="dropdown-item" id="changePasswordBtn">Change Password</button>
-          <button class="dropdown-item" id="settingsBtn">Account Settings</button>
+          <button class="dropdown-item" onclick="alert('My Profile coming soon!')">My Profile</button>
+          <button class="dropdown-item" onclick="alert('Change Password coming soon!')">Change Password</button>
+          <button class="dropdown-item" onclick="alert('Account Settings coming soon!')">Account Settings</button>
           <div class="dropdown-divider"></div>
-          <button class="dropdown-item" id="logoutBtn">Logout</button>
+          <button class="dropdown-item" id="logoutBtn" onclick="logout()">Logout</button>
         </div>
       </div>
     </div>
@@ -50,12 +50,12 @@
 
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar" aria-label="Main navigation">
-    <a href="#" class="sidebar-item active" data-page="dashboard">Dashboard</a>
-    <a href="#" class="sidebar-item" data-page="patients">Patients</a>
-    <a href="#" class="sidebar-item admin-only" data-page="staff">Staff Management</a>
-    <a href="#" class="sidebar-item admin-only" data-page="logs">Audit Logs</a>
-    <a href="#" class="sidebar-item admin-only" data-page="backup">Backup & Restore</a>
-    <a href="#" class="sidebar-item" data-page="settings">Account Settings</a>
+    <a href="#" class="sidebar-item active" onclick="navigateTo('dashboard'); return false;">Dashboard</a>
+    <a href="#" class="sidebar-item" onclick="navigateTo('patients'); return false;">Patients</a>
+    <a href="#" class="sidebar-item admin-only" onclick="navigateTo('staff'); return false;">Staff Management</a>
+    <a href="#" class="sidebar-item admin-only" onclick="navigateTo('logs'); return false;">Audit Logs</a>
+    <a href="#" class="sidebar-item admin-only" onclick="navigateTo('backup'); return false;">Backup & Restore</a>
+    <a href="#" class="sidebar-item" onclick="navigateTo('settings'); return false;">Account Settings</a>
   </nav>
 
   <!-- Main Content -->

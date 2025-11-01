@@ -56,8 +56,9 @@
 }
 
 .quick-action-btn.primary:hover {
+  background: linear-gradient(135deg, var(--primary-pink-dark), var(--primary-pink-dark));
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(232, 180, 188, 0.45);
+  box-shadow: 0 4px 12px rgba(216, 155, 167, 0.45);
 }
 
 .quick-action-btn.secondary {
