@@ -337,7 +337,13 @@ function updateGreeting() {
 
   const userName = getUserName();
   if (userName) {
-    const firstName = userName.split(' ')[0];
+    const parts = userName.split(' ');
+    // Skip titles like "Dr.", "Mr.", "Ms.", etc.
+    const titles = ['Dr.', 'Mr.', 'Ms.', 'Mrs.', 'Miss'];
+    let firstName = parts[0];
+    if (titles.includes(parts[0]) && parts.length > 1) {
+      firstName = parts[1];
+    }
     greetingElement.textContent = getGreeting(firstName);
   }
 }
