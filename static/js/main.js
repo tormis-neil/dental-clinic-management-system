@@ -39,16 +39,10 @@ function initializeApp() {
  * Sets up the sidebar toggle functionality
  */
 function setupSidebar() {
-  const sidebar = document.querySelector('.sidebar');
-  const mainContent = document.querySelector('.main-content');
-  const toggleButton = document.querySelector('.sidebar-toggle');
-
-  if (!sidebar || !mainContent || !toggleButton) {
-    return;
-  }
-
-  // Add click event listener to toggle button
-  toggleButton.addEventListener('click', toggleSidebar);
+  // NOTE: Sidebar toggle is handled via inline onclick="toggleSidebar()" in HTML
+  // Do NOT add duplicate addEventListener here as it causes double-toggle issues
+  // The toggleSidebar() function is already globally accessible (line 80)
+  return;
 }
 
 /**
@@ -83,38 +77,35 @@ window.toggleSidebar = toggleSidebar;
  * Sets up the user dropdown menu
  */
 function setupUserDropdown() {
+  // NOTE: User dropdown toggle is handled via inline onclick="toggleDropdown()" in HTML
+  // Do NOT add duplicate addEventListener here as it causes double-toggle issues
+  // The toggleDropdown() function is already globally accessible (line 394)
+
+  // However, we DO want to close dropdown when clicking outside
   const dropdown = document.querySelector('.user-dropdown');
-  const trigger = dropdown?.querySelector('.user-trigger');
 
-  if (!dropdown || !trigger) {
-    return;
+  if (dropdown) {
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('.user-trigger');
+
+      if (!trigger && dropdown.classList.contains('open')) {
+        dropdown.classList.remove('open');
+        const triggerEl = dropdown.querySelector('.user-trigger');
+        if (triggerEl) {
+          triggerEl.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
   }
-
-  // Toggle dropdown on click
-  trigger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle('open');
-
-    // Update aria-expanded
-    const isOpen = dropdown.classList.contains('open');
-    trigger.setAttribute('aria-expanded', String(isOpen));
-  });
-
-  // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!dropdown.contains(e.target)) {
-      dropdown.classList.remove('open');
-      trigger.setAttribute('aria-expanded', 'false');
-    }
-  });
 }
 
 /**
  * Updates the page title based on user role and current page
  */
 function updatePageTitle() {
-  const user = getCurrentUser();
-  const userRole = user ? user.role : 'staff';
+  // CRITICAL: Read userRole from localStorage (set during login)
+  const userRole = localStorage.getItem('userRole') || 'staff';
   const currentPage = window.location.pathname;
   const titleElement = document.getElementById('pageTitle');
 
@@ -139,6 +130,7 @@ function updatePageTitle() {
   // Set title with role
   const roleText = userRole === 'manager' ? 'Manager' : 'Staff';
   titleElement.textContent = `Kit & Dom's Dental Clinic — ${roleText} ${pageName}`;
+  console.log('Page title updated for role:', userRole, '- Title:', `${roleText} ${pageName}`);
 }
 
 /**
@@ -387,6 +379,13 @@ function toggleDropdown() {
   const dropdown = document.getElementById('userDropdown');
   if (dropdown) {
     dropdown.classList.toggle('open');
+
+    // Update aria-expanded attribute for accessibility
+    const trigger = dropdown.querySelector('.user-trigger');
+    if (trigger) {
+      const isOpen = dropdown.classList.contains('open');
+      trigger.setAttribute('aria-expanded', String(isOpen));
+    }
   }
 }
 
