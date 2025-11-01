@@ -76,6 +76,9 @@ function toggleSidebar() {
   }
 }
 
+// Make it globally accessible
+window.toggleSidebar = toggleSidebar;
+
 /**
  * Sets up the user dropdown menu
  */

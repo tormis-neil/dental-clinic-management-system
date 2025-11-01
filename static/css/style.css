@@ -480,7 +480,9 @@ textarea {
 }
 
 .sidebar.collapsed .sidebar-label {
-  display: none;
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
 }
 
 .sidebar-item {
