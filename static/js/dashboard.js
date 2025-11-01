@@ -135,17 +135,53 @@ function actionBadge(type) {
 }
 
 /**
+ * Gets user initials from name
+ * @param {string} name - Full name
+ * @returns {string} Initials (e.g., "Maria Santos" -> "MS")
+ */
+function getUserInitials(name) {
+  if (!name) return '??';
+  const parts = name.split(' ');
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+  return name.substring(0, 2).toUpperCase();
+}
+
+/**
+ * Gets user role display text
+ * @param {string} role - User role (manager/staff)
+ * @param {string} name - User name for additional context
+ * @returns {string} Role display text
+ */
+function getUserRoleDisplay(role, name) {
+  if (role === 'manager') {
+    // Check if user is a doctor
+    if (name && name.toLowerCase().includes('dr.')) {
+      return 'Manager / Dentist';
+    }
+    return 'Manager';
+  }
+  return 'Staff';
+}
+
+/**
  * Updates the user info in the header
- * @param {object} userData - User data object
+ * @param {object} userData - User data object from sessionStorage
  */
 function updateUserInfo(userData) {
   const userNameEl = document.getElementById('userName');
   const userRoleEl = document.getElementById('userRole');
   const userAvatarEl = document.getElementById('userAvatar');
 
+  if (!userData) return;
+
+  const initials = getUserInitials(userData.name);
+  const roleDisplay = getUserRoleDisplay(userData.role, userData.name);
+
   if (userNameEl) userNameEl.textContent = userData.name;
-  if (userRoleEl) userRoleEl.textContent = userData.role;
-  if (userAvatarEl) userAvatarEl.textContent = userData.avatar;
+  if (userRoleEl) userRoleEl.textContent = roleDisplay;
+  if (userAvatarEl) userAvatarEl.textContent = initials;
 }
 
 /**
@@ -163,32 +199,39 @@ function updateSubtitle(subtitle) {
  * Initializes the dashboard based on user role
  */
 function initDashboard() {
-  // Get current user role
-  const userRole = getUserRole();
+  // Get current user from sessionStorage
+  const currentUser = getCurrentUser();
 
-  if (!userRole) {
-    // No user role found, redirect to login
+  if (!currentUser || !currentUser.role) {
+    // No user found, redirect to login
     window.location.href = 'login.html';
     return;
   }
 
-  // Set data-role attribute on body
+  const userRole = currentUser.role;
+
+  // Set data-role attribute on body for CSS styling
   document.body.dataset.role = userRole;
 
-  // Get data for current role
+  // Update page title based on role
+  if (typeof updatePageTitle === 'function') {
+    updatePageTitle();
+  }
+
+  // Update user info in header with actual logged-in user data
+  updateUserInfo(currentUser);
+
+  // Update greeting (using main.js function)
+  if (typeof updateGreeting === 'function') {
+    updateGreeting();
+  }
+
+  // Get demo data for current role (for cards and table)
   const data = demoData[userRole];
 
   if (!data) {
     console.error('No data found for role:', userRole);
     return;
-  }
-
-  // Update user info in header
-  updateUserInfo(data.user);
-
-  // Update greeting (using main.js function)
-  if (typeof updateGreeting === 'function') {
-    updateGreeting();
   }
 
   // Update subtitle
@@ -217,7 +260,7 @@ function setupQuickActions() {
 
   if (viewAllBtn) {
     viewAllBtn.addEventListener('click', () => {
-      window.location.href = 'patients.html';
+      alert('Feature coming soon!');
     });
   }
 
