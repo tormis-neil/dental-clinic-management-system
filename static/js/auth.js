@@ -31,8 +31,10 @@ function logout() {
   // Clear any localStorage session flags if they exist
   localStorage.removeItem('currentUser');
   localStorage.removeItem('userRole');
+  localStorage.removeItem('userName');
+  localStorage.removeItem('username');
   localStorage.removeItem('isLoggedIn');
-  localStorage.removeItem('clinic_remember_username');
+  // Note: Do NOT remove 'clinic_remember_username' - it's for the remember-me feature
 
   // Redirect to login page
   window.location.href = 'login.html';

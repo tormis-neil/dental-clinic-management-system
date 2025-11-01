@@ -199,19 +199,29 @@ function updateSubtitle(subtitle) {
  * Initializes the dashboard based on user role
  */
 function initDashboard() {
-  // Get current user from sessionStorage
-  const currentUser = getCurrentUser();
+  // CRITICAL: Read userRole from localStorage (set during login)
+  const userRole = localStorage.getItem('userRole');
 
-  if (!currentUser || !currentUser.role) {
-    // No user found, redirect to login
+  if (!userRole) {
+    // No user role found, redirect to login
+    console.error('No userRole found in localStorage, redirecting to login');
     window.location.href = 'login.html';
     return;
   }
 
-  const userRole = currentUser.role;
+  // Get current user from sessionStorage for display data
+  const currentUser = getCurrentUser();
 
-  // Set data-role attribute on body for CSS styling
-  document.body.dataset.role = userRole;
+  if (!currentUser) {
+    console.error('No user data in sessionStorage, redirecting to login');
+    window.location.href = 'login.html';
+    return;
+  }
+
+  // CRITICAL: Set data-role attribute on body for CSS styling
+  // This controls visibility of .admin-only elements via CSS
+  document.body.setAttribute('data-role', userRole);
+  console.log('Dashboard initialized for role:', userRole);
 
   // Update page title based on role
   if (typeof updatePageTitle === 'function') {

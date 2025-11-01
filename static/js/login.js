@@ -120,12 +120,17 @@ document.addEventListener('DOMContentLoaded', () => {
           localStorage.removeItem('clinic_remember_username');
         }
 
-        // Store user session
+        // Store user session in sessionStorage
         sessionStorage.setItem('clinic_user', JSON.stringify({
           username,
           role: user.role,
           name: user.name
         }));
+
+        // CRITICAL: Also save userRole to localStorage for role-based UI control
+        localStorage.setItem('userRole', user.role);
+        localStorage.setItem('userName', user.name);
+        localStorage.setItem('username', username);
 
         spinner.classList.remove('show');
         btnText.textContent = 'Success!';
