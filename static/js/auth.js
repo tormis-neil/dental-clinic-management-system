@@ -19,17 +19,27 @@
  * Clears all session data and redirects to login page
  */
 function logout() {
+  // Confirm logout
+  if (!confirm('Are you sure you want to logout?')) {
+    return;
+  }
+
   // Clear all session data from sessionStorage
   sessionStorage.removeItem('clinic_user');
+  sessionStorage.clear();
 
   // Clear any localStorage session flags if they exist
   localStorage.removeItem('currentUser');
   localStorage.removeItem('userRole');
   localStorage.removeItem('isLoggedIn');
+  localStorage.removeItem('clinic_remember_username');
 
   // Redirect to login page
   window.location.href = 'login.html';
 }
+
+// Make logout function globally accessible
+window.logout = logout;
 
 /**
  * Checks if user is currently logged in

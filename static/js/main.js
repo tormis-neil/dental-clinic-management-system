@@ -31,10 +31,8 @@ function initializeApp() {
     setupUserDropdown();
   }
 
-  // Update dashboard title if on dashboard page
-  if (window.location.pathname.includes('dashboard.html')) {
-    updateDashboardTitle();
-  }
+  // Update page title based on role and current page
+  updatePageTitle();
 }
 
 /**
@@ -109,24 +107,42 @@ function setupUserDropdown() {
 }
 
 /**
- * Updates the dashboard title based on user role
+ * Updates the page title based on user role and current page
  */
-function updateDashboardTitle() {
-  const userRole = getUserRole();
-  const titleElement = document.querySelector('.header-title');
+function updatePageTitle() {
+  const user = getCurrentUser();
+  const userRole = user ? user.role : 'staff';
+  const currentPage = window.location.pathname;
+  const titleElement = document.getElementById('pageTitle');
 
   if (!titleElement) {
     return;
   }
 
-  // Update title based on role
-  if (userRole === 'manager') {
-    titleElement.textContent = "Kit & Dom's Dental Clinic — Manager Dashboard";
-  } else if (userRole === 'staff') {
-    titleElement.textContent = "Kit & Dom's Dental Clinic — Staff Dashboard";
-  } else {
-    titleElement.textContent = "Kit & Dom's Dental Clinic";
+  // Determine page name
+  let pageName = 'Dashboard';
+  if (currentPage.includes('patient')) {
+    pageName = 'Patient Records';
+  } else if (currentPage.includes('staff')) {
+    pageName = 'Staff Management';
+  } else if (currentPage.includes('settings')) {
+    pageName = 'Settings';
+  } else if (currentPage.includes('audit')) {
+    pageName = 'Audit Logs';
+  } else if (currentPage.includes('backup')) {
+    pageName = 'Backup & Restore';
   }
+
+  // Set title with role
+  const roleText = userRole === 'manager' ? 'Manager' : 'Staff';
+  titleElement.textContent = `Kit & Dom's Dental Clinic — ${roleText} ${pageName}`;
+}
+
+/**
+ * Updates the dashboard title based on user role (deprecated, use updatePageTitle)
+ */
+function updateDashboardTitle() {
+  updatePageTitle();
 }
 
 /**
@@ -322,6 +338,61 @@ function updateGreeting() {
     greetingElement.textContent = getGreeting(firstName);
   }
 }
+
+/**
+ * Navigate to different pages with correct paths
+ * @param {string} page - Page identifier
+ */
+function navigateTo(page) {
+  const baseUrl = window.location.origin;
+  const currentPath = window.location.pathname;
+
+  // Determine if we're in templates/ root or templates/pages/
+  const inPagesFolder = currentPath.includes('/pages/');
+
+  const routes = {
+    'dashboard': inPagesFolder ? '../dashboard.html' : 'dashboard.html',
+    'patients': inPagesFolder ? '../patients.html' : 'patients.html',
+    'staff': inPagesFolder ? 'staff-management.html' : 'pages/staff-management.html',
+    'logs': inPagesFolder ? 'audit-logs.html' : 'pages/audit-logs.html',
+    'backup': inPagesFolder ? 'backup-restore.html' : 'pages/backup-restore.html',
+    'settings': inPagesFolder ? 'settings.html' : 'pages/settings.html'
+  };
+
+  const path = routes[page];
+  if (path) {
+    window.location.href = path;
+  } else {
+    console.error('Page not found:', page);
+    alert('Page not found: ' + page);
+  }
+}
+
+// Make function globally accessible
+window.navigateTo = navigateTo;
+
+/**
+ * Toggle user dropdown menu
+ */
+function toggleDropdown() {
+  const dropdown = document.getElementById('userDropdown');
+  if (dropdown) {
+    dropdown.classList.toggle('open');
+  }
+}
+
+// Make function globally accessible
+window.toggleDropdown = toggleDropdown;
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+  const dropdown = document.getElementById('userDropdown');
+  const trigger = event.target.closest('.user-trigger');
+
+  if (!trigger && dropdown && dropdown.classList.contains('open')) {
+    dropdown.classList.remove('open');
+  }
+});
 
 // Initialize app when DOM is ready
 if (document.readyState === 'loading') {

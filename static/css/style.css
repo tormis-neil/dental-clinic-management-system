@@ -8,11 +8,13 @@
    CSS CUSTOM PROPERTIES (VARIABLES)
    =================================== */
 :root {
-  /* Primary Pink Theme Colors */
-  --primary-pink: #E8B4BC;
-  --dark-pink: #D89BA7;
-  --accent-pink: #D66F78;
-  --light-pink: #E3A9B1;
+  /* Primary Pink Theme Colors - Updated for better contrast */
+  --primary-pink: #D89BA7;      /* Main pink - darker for better contrast */
+  --primary-pink-dark: #C98999;  /* Hover state - even darker */
+  --primary-pink-light: #E8B4BC; /* Light pink for backgrounds */
+  --dark-pink: #D89BA7;          /* Kept for backwards compatibility */
+  --accent-pink: #D66F78;        /* Accent color */
+  --light-pink: #E3A9B1;         /* Light pink */
 
   /* Text Colors */
   --text-dark: #1A1A1A;
@@ -156,8 +158,9 @@ button {
 }
 
 .btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-pink-dark), var(--primary-pink-dark));
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(232, 180, 188, 0.45);
+  box-shadow: 0 4px 12px rgba(216, 155, 167, 0.45);
 }
 
 .btn-secondary {
@@ -495,8 +498,8 @@ textarea {
 }
 
 .sidebar-item:hover {
-  background: rgba(232, 180, 188, 0.08);
-  color: var(--primary-pink);
+  background: rgba(216, 155, 167, 0.12);
+  color: var(--primary-pink-dark);
 }
 
 .sidebar-item.active {
@@ -512,7 +515,7 @@ textarea {
   top: 0;
   bottom: 0;
   width: 4px;
-  background: var(--dark-pink);
+  background: var(--primary-pink-dark);
   border-radius: 0 4px 4px 0;
 }
 
