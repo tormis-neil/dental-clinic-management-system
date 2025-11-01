@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Manager Dashboard – Kit & Dom's Dental Clinic</title>
-  <link rel="stylesheet" href="../../css/dashboard.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/style.css" />
+  <link rel="stylesheet" href="../static/css/manager.css" />
 </head>
 
 <body data-role="manager">
@@ -23,20 +24,7 @@
       <div class="header-title">Kit & Dom's Dental Clinic — Manager Dashboard</div>
     </div>
 
-    <div class="search-container">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="11" cy="11" r="8"></circle>
-        <path d="m21 21-4.35-4.35"></path>
-      </svg>
-      <input id="searchInput" class="search-input" placeholder="Search patients, staff, records..." />
-    </div>
-
     <div class="header-right">
-      <div class="role-switcher">
-        <button class="role-switch-btn active" id="managerBtn">Manager</button>
-        <button class="role-switch-btn" id="staffBtn">Staff</button>
-      </div>
-
       <div class="user-dropdown" id="userDropdown">
         <button class="user-trigger" aria-haspopup="true" aria-expanded="false">
           <div class="user-avatar" id="userAvatar">MS</div>
@@ -97,6 +85,9 @@
 
   <footer class="footer">© 2025 Kit & Dom's Dental Clinic | Version 1.0</footer>
 
-  <script src="../../js/dashboard.js"></script>
+  <!-- Load JS files in order: auth, main, then page-specific -->
+  <script src="../static/js/auth.js"></script>
+  <script src="../static/js/main.js"></script>
+  <script src="../static/js/dashboard.js"></script>
 </body>
 </html>

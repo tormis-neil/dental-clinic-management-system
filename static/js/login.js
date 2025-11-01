@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Redirect to dashboard
         setTimeout(() => {
-          window.location.href = '../pages/dashboard.html';
+          window.location.href = 'dashboard.html';
         }, 600);
       } else {
         throw new Error('Invalid username or password. Please try again.');
