@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manager Dashboard – Kit & Dom's Dental Clinic</title>
+  <title>Manager Dashboard — Kit & Dom's Dental Clinic</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../static/css/style.css" />
   <link rel="stylesheet" href="../static/css/manager.css" />
@@ -13,7 +13,7 @@
   <!-- Header -->
   <header class="header">
     <div class="header-left">
-      <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+      <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar" aria-expanded="true">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="3" y1="6" x2="21" y2="6"></line>
           <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -26,7 +26,7 @@
 
     <div class="header-right">
       <div class="user-dropdown" id="userDropdown">
-        <button class="user-trigger" onclick="toggleDropdown()" aria-haspopup="true" aria-expanded="false">
+        <button class="user-trigger" onclick="toggleDropdown(event)" aria-haspopup="true" aria-expanded="false">
           <div class="user-avatar" id="userAvatar">MS</div>
           <div class="user-info">
             <div class="user-name" id="userName">Maria Santos</div>
@@ -50,12 +50,24 @@
 
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar" aria-label="Main navigation">
-    <a href="#" class="sidebar-item active" onclick="navigateTo('dashboard'); return false;">Dashboard</a>
-    <a href="#" class="sidebar-item" onclick="navigateTo('patients'); return false;">Patients</a>
-    <a href="#" class="sidebar-item admin-only" onclick="navigateTo('staff'); return false;">Staff Management</a>
-    <a href="#" class="sidebar-item admin-only" onclick="navigateTo('logs'); return false;">Audit Logs</a>
-    <a href="#" class="sidebar-item admin-only" onclick="navigateTo('backup'); return false;">Backup & Restore</a>
-    <a href="#" class="sidebar-item" onclick="navigateTo('settings'); return false;">Account Settings</a>
+    <a href="#" class="sidebar-item active" onclick="navigateTo('dashboard'); return false;">
+      <span class="sidebar-label">Dashboard</span>
+    </a>
+    <a href="#" class="sidebar-item" onclick="navigateTo('patients'); return false;">
+      <span class="sidebar-label">Patients</span>
+    </a>
+    <a href="#" class="sidebar-item admin-only" onclick="navigateTo('staff'); return false;">
+      <span class="sidebar-label">Staff Management</span>
+    </a>
+    <a href="#" class="sidebar-item admin-only" onclick="navigateTo('logs'); return false;">
+      <span class="sidebar-label">Audit Logs</span>
+    </a>
+    <a href="#" class="sidebar-item admin-only" onclick="navigateTo('backup'); return false;">
+      <span class="sidebar-label">Backup & Restore</span>
+    </a>
+    <a href="#" class="sidebar-item" onclick="navigateTo('settings'); return false;">
+      <span class="sidebar-label">Account Settings</span>
+    </a>
   </nav>
 
   <!-- Main Content -->
