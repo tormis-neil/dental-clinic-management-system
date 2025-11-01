@@ -19,7 +19,7 @@ body {
 /* Branding */
 .branding { display:flex; gap:16px; align-items:center; margin-bottom: 8px; }
 .logo { width:56px; height:56px; background: #fff; color: #E8B4BC; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; }
-.clinic-name { font-family: "Poppins", sans-serif; font-size: 26px; font-weight: 700; line-height:1.05; color: #fff; }
+.clinic-name { font-family: "Poppins", sans-serif; font-size: 36px; font-weight: 700; line-height:1.2; color: #fff; }
 .tagline { color: rgba(255,255,255,.95); margin-top: 8px; font-size: 15px; }
 
 /* Illustration */
@@ -63,7 +63,7 @@ input.error { border-color:#EF4444; animation: shake .35s; }
 .error-message[hidden] { display:none; }
 
 /* Remember row */
-.form-row { margin-top:6px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.form-row { margin-top:6px; margin-bottom:6px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
 .remember-me { display:flex; align-items:center; gap:8px; color:#475569; font-size:13px; }
 .remember-me input { width:16px; height:16px; accent-color:#D66F78; }
 
