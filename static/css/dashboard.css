@@ -1,4 +1,4 @@
-   /* Dashboard Styles – Kit & Dom's Dental Clinic */
+/* Dashboard Styles – Kit & Dom's Dental Clinic */
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family:'Inter',sans-serif;
@@ -76,9 +76,24 @@ body {
   border-right:1px solid #E2E8F0; padding-top:16px; overflow-y:auto; transition:width .3s ease;
   z-index:90;
 }
+/* FIX #2: Collapsed sidebar styles - hide text properly */
+.sidebar.collapsed {
+  width: 70px;
+}
+.sidebar.collapsed .sidebar-item {
+  padding: 14px 24px;
+  justify-content: center;
+}
+.sidebar.collapsed .sidebar-item span {
+  display: none;
+}
+/* End FIX #2 */
+
 .sidebar-item {
-  display:block; padding:14px 24px; font-size:14px; font-weight:500; color:#64748B; text-decoration:none;
+  display:flex; align-items:center; gap:12px;
+  padding:14px 24px; font-size:14px; font-weight:500; color:#64748B; text-decoration:none;
   transition:all .2s ease; position:relative; font-family:'Inter',sans-serif;
+  cursor: pointer;
 }
 .sidebar-item:hover { background:rgba(232,180,188,0.08); color:#E8B4BC; }
 .sidebar-item.active {
@@ -89,11 +104,24 @@ body {
   background:#D89BA7; border-radius:0 4px 4px 0;
 }
 
+/* Icons in sidebar */
+.sidebar-item svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 /* Main Content */
 .main-content {
   margin-left:240px; margin-top:70px; padding:32px 40px; min-height:calc(100vh - 70px);
   transition:margin-left .3s ease;
 }
+/* FIX #2: Adjust main content when sidebar is collapsed */
+.main-content.expanded {
+  margin-left: 70px;
+}
+/* End FIX #2 */
+
 .greeting-section { margin-bottom:28px; }
 .greeting-title { font-family:'Poppins'; font-weight:700; font-size:28px; margin-bottom:6px; color:#1A1A1A; }
 .greeting-subtitle { font-size:15px; color:#64748B; line-height:1.5; }

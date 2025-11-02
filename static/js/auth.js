@@ -115,17 +115,6 @@ function checkSession() {
 }
 
 /**
- * Redirects user to login page if not logged in
- * Alternative to checkSession with custom redirect path
- * @param {string} redirectPath - Path to redirect to if not logged in
- */
-function redirectIfNotLoggedIn(redirectPath = 'login.html') {
-  if (!isLoggedIn()) {
-    window.location.href = redirectPath;
-  }
-}
-
-/**
  * Checks if current user has admin/manager privileges
  * @returns {boolean} True if user is a manager, false otherwise
  */

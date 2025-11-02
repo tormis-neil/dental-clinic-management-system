@@ -23,6 +23,7 @@ const demoData = {
   manager: {
     user: { name: 'Maria Santos', role: 'Manager / Dentist', avatar: 'MS' },
     greeting: 'Maria',
+    dashboardTitle: 'Manager Dashboard',
     subtitle: "Here's your clinic overview.",
     cards: [
       { value: 152, label: 'Total Patients', trend: '↑ 12 this month', type: 'positive' },
@@ -40,6 +41,7 @@ const demoData = {
   staff: {
     user: { name: 'Carla Reyes', role: 'Staff', avatar: 'CR' },
     greeting: 'Carla',
+    dashboardTitle: 'Staff Dashboard',
     subtitle: "Here's a quick overview of today's patient records.",
     cards: [
       { value: 152, label: 'Total Patients', trend: '↑ 12 this month', type: 'positive' },
@@ -196,6 +198,21 @@ function updateSubtitle(subtitle) {
 }
 
 /**
+ * Updates the page title based on dashboard type
+ * @param {string} dashboardTitle - Dashboard title
+ */
+function updateDashboardPageTitle(dashboardTitle) {
+  // Update HTML title tag
+  document.title = `${dashboardTitle} – Kit & Dom's Dental Clinic`;
+  
+  // Update page header title
+  const headerTitle = document.getElementById('pageTitle');
+  if (headerTitle) {
+    headerTitle.textContent = `Kit & Dom's Dental Clinic — ${dashboardTitle}`;
+  }
+}
+
+/**
  * Initializes the dashboard based on user role
  */
 function initDashboard() {
@@ -223,11 +240,6 @@ function initDashboard() {
   document.body.setAttribute('data-role', userRole);
   console.log('Dashboard initialized for role:', userRole);
 
-  // Update page title based on role
-  if (typeof updatePageTitle === 'function') {
-    updatePageTitle();
-  }
-
   // Update user info in header with actual logged-in user data
   updateUserInfo(currentUser);
 
@@ -243,6 +255,9 @@ function initDashboard() {
     console.error('No data found for role:', userRole);
     return;
   }
+
+  // Update dashboard title based on role
+  updateDashboardPageTitle(data.dashboardTitle);
 
   // Update subtitle
   updateSubtitle(data.subtitle);
@@ -268,9 +283,12 @@ function setupQuickActions() {
     });
   }
 
+  // FIX #3: View All Patients button should show the same "coming soon" notification
   if (viewAllBtn) {
     viewAllBtn.addEventListener('click', () => {
-      alert('Feature coming soon!');
+      if (typeof showNotification === 'function') {
+        showNotification('View All Patients feature coming soon!', 'info');
+      }
     });
   }
 

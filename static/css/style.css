@@ -9,8 +9,8 @@
    =================================== */
 :root {
   /* Primary Pink Theme Colors - Updated for better contrast */
-  --primary-pink: #D89BA7;      /* Main pink - darker for better contrast */
-  --primary-pink-dark: #C98999;  /* Hover state - even darker */
+  --primary-pink: #e06981;      /* Main pink - darker for better contrast */
+  --primary-pink-dark: #d18195;  /* Hover state - even darker */
   --primary-pink-light: #E8B4BC; /* Light pink for backgrounds */
   --dark-pink: #D89BA7;          /* Kept for backwards compatibility */
   --accent-pink: #D66F78;        /* Accent color */
