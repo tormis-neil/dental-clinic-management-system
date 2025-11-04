@@ -1,0 +1,299 @@
+/* Patients Module Styles – Kit & Dom's Dental Clinic */
+
+/* Search Bar */
+.search-bar-container {
+  margin-bottom: 24px;
+}
+
+.search-bar {
+  position: relative;
+  max-width: 600px;
+}
+
+.search-bar .search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94A3B8;
+  pointer-events: none;
+}
+
+.search-bar .search-input {
+  width: 100%;
+  padding: 14px 16px 14px 48px;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: all 0.2s ease;
+  background: #fff;
+}
+
+.search-bar .search-input:focus {
+  border-color: #E8B4BC;
+  box-shadow: 0 0 0 4px rgba(232, 180, 188, 0.08);
+}
+
+.search-bar .search-input::placeholder {
+  color: #94A3B8;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn svg {
+  flex-shrink: 0;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #E8B4BC, #D89BA7);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(232, 180, 188, 0.35);
+}
+
+.action-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(232, 180, 188, 0.45);
+}
+
+.action-btn.secondary {
+  background: #fff;
+  color: #3B82F6;
+  border: 2px solid #3B82F6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.action-btn.secondary:hover {
+  background: #3B82F6;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.3);
+}
+
+.action-btn.danger {
+  background: #fff;
+  color: #EF4444;
+  border: 2px solid #EF4444;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.action-btn.danger:hover {
+  background: #EF4444;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(239, 68, 68, 0.3);
+}
+
+.action-btn.export {
+  background: #fff;
+  color: #10B981;
+  border: 2px solid #10B981;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.action-btn.export:hover {
+  background: #10B981;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(16, 185, 129, 0.3);
+}
+
+/* Patients Section */
+.patients-section {
+  background: #fff;
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #F1F5F9;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #1A1A1A;
+}
+
+.section-info {
+  font-size: 14px;
+  color: #64748B;
+}
+
+.section-info span {
+  font-weight: 700;
+  color: #E8B4BC;
+}
+
+/* Table Styles */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+#patientsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#patientsTable thead {
+  background: #F7F8FA;
+}
+
+#patientsTable th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+#patientsTable td {
+  padding: 16px;
+  text-align: left;
+  border-top: 1px solid #E2E8F0;
+  font-size: 14px;
+  color: #1A1A1A;
+}
+
+#patientsTable tbody tr {
+  transition: background 0.15s ease;
+}
+
+#patientsTable tbody tr:hover {
+  background: rgba(232, 180, 188, 0.04);
+}
+
+/* Patient ID */
+.patient-id {
+  color: #E8B4BC;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Gender Badge */
+.gender-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.gender-male {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3B82F6;
+}
+
+.gender-female {
+  background: rgba(236, 72, 153, 0.1);
+  color: #EC4899;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-active {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10B981;
+}
+
+.status-inactive {
+  background: rgba(100, 116, 139, 0.1);
+  color: #64748B;
+}
+
+/* Action Icons */
+.action-icons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-icon {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.action-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.action-icon.edit {
+  color: #3B82F6;
+}
+
+.action-icon.edit:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.action-icon.delete {
+  color: #EF4444;
+}
+
+.action-icon.delete:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .table-wrapper {
+    overflow-x: scroll;
+  }
+
+  #patientsTable {
+    min-width: 900px;
+  }
+}
