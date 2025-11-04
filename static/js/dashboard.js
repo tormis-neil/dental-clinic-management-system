@@ -277,25 +277,22 @@ function setupQuickActions() {
 
   if (addPatientBtn) {
     addPatientBtn.addEventListener('click', () => {
-      if (typeof showNotification === 'function') {
-        showNotification('Add Patient feature coming soon!', 'info');
-      }
+      // Navigate to patients page
+      window.location.href = 'patients.html';
     });
   }
 
-  // FIX #3: View All Patients button should show the same "coming soon" notification
   if (viewAllBtn) {
     viewAllBtn.addEventListener('click', () => {
-      if (typeof showNotification === 'function') {
-        showNotification('View All Patients feature coming soon!', 'info');
-      }
+      // Navigate to patients page
+      window.location.href = 'patients.html';
     });
   }
 
   if (addStaffBtn) {
     addStaffBtn.addEventListener('click', () => {
       if (typeof showNotification === 'function') {
-        showNotification('Add Staff feature coming soon!', 'info');
+        showNotification('Staff Management feature coming soon!', 'info');
       }
     });
   }
